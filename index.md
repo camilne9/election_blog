@@ -1,38 +1,39 @@
-## Welcome to GitHub Pages
-# This is a test
+## 2020 Presidential Election Blog
+# Gov1347: Election Analytics
 
-You can use the [editor on GitHub](https://github.com/camilne9/election_blog/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+```{r included = FALSE}
+library(tidyverse)
+library(ggplot2)
+library(usmap)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+popvote_df <- read_csv("popvote_1948-2016.csv")
 ```
+Did this work?
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+```{r include = FALSE}
+## subset
+popvote_df %>% 
+  filter(year == 2016) %>% 
+  select(party, candidate, pv2p)
 
-### Jekyll Themes
+## format
+(popvote_wide_df <- popvote_df %>%
+  select(year, party, pv2p) %>%
+  spread(party, pv2p))
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/camilne9/election_blog/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+## modify
+(popvote_wide_df <- popvote_wide_df %>% 
+  mutate(winner = case_when(democrat > republican ~ "D",
+                            TRUE ~ "R")))
 
-### Support or Contact
+## summarise
+popvote_wide_df %>% 
+  group_by(winner) %>%
+  summarise(races = n())
+```
+Now lets try a plot
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+```{r}
+ggplot(popvote_df, aes(x = pv2p)) + 
+    geom_histogram()
+```
