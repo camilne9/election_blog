@@ -13,14 +13,14 @@ library(usmap)
 
 ## set working directory here
 #setwd("~/Google Drive Harvard/Courses/Gov1347-ElectionAnalytics-2020/Public/01-Intro_09-07-2020")
-setwd("~/gov1347lab_9-9")
+setwd("~/gov1347/election_blog/scripts")
 
 ####----------------------------------------------------------#
 #### Read and clean pres pop vote ####
 ####----------------------------------------------------------#
 
 ## read
-popvote_df <- read_csv("popvote_1948-2016.csv")
+popvote_df <- read_csv("../data/popvote_1948-2016.csv")
 
 ## subset
 popvote_df %>% 
@@ -105,7 +105,7 @@ ggsave("PV_national_historical.png", height = 4, width = 8)
 ####----------------------------------------------------------#
 
 ## read in state pop vote
-pvstate_df <- read_csv("popvote_bystate_1948-2016.csv")
+pvstate_df <- read_csv("../data/popvote_bystate_1948-2016.csv")
 pvstate_df$full <- pvstate_df$state
 
 ## shapefile of states from `usmap` library
